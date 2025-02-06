@@ -98,7 +98,7 @@ function RegisterPage() {
           <div>
             <Button type="submit" className="w-full my-4" disabled={loading}>
               {loading && <ButtonLoader />}
-              Cadastrar-se
+              Criar conta
             </Button>
           </div>
 

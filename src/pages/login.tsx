@@ -87,7 +87,7 @@ function LoginPage() {
               type="submit"
               className="w-full mt-4"
             >
-              <Link to="/">Cadastrar-se</Link>
+              <Link to="/">Criar conta</Link>
             </Button>
           </div>
         </form>

@@ -1,12 +1,8 @@
-import * as AuthLayout from "@/components/layouts/auth.layout";
+import Page from "@/app/dashboard/page";
 
 function DashboardPage() {
   return (
-    <AuthLayout.Container>
-      <AuthLayout.Title>Dashboard</AuthLayout.Title>
-
-      <AuthLayout.Text>Textão</AuthLayout.Text>
-    </AuthLayout.Container>
+    <Page />
   );
 }
 
