@@ -11,8 +11,9 @@ export interface CreateAccountInput {
 export class AccountService {
   constructor(private api: AxiosInstance) {}
 
-  create(account: CreateAccountInput) {
-    this.api.post("/api/account", account);
+  async create(input: CreateAccountInput) {
+    const { data } = await this.api.post("/api/account", input);
+    return data;
   }
 }
 

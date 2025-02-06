@@ -1,36 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLoader } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { InputControl } from "@/components/control/input-control";
 import { InputPasswordControl } from "@/components/control/input-password-control";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Separator } from "@/components/ui/separator";
 import { accountService } from "@/services/accounts.service";
-import { ReactNode } from "react";
-
-function Layout({ children }: { children: ReactNode }) {
-  return (
-    <div className="relative h-dvh flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex"></div>
-      <div className="lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-2 p-6 sm:w-[500px]">
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Title({ children }: { children: ReactNode }) {
-  return <h1 className="text-2xl font-semibold tracking-tight">{children}</h1>;
-}
-
-function Text({ children }: { children: ReactNode }) {
-  return <p className="text-sm text-muted-foreground">{children}</p>
-}
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import * as AuthLayout from "@/components/layouts/auth.layout";
 
 const formSchema = z
   .object({
@@ -51,6 +31,10 @@ const formSchema = z
   });
 
 function RegisterPage() {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -63,18 +47,37 @@ function RegisterPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    if (loading) return;
 
-    await accountService.create(values);
+    setLoading(true);
+
+    try {
+      await accountService.create(values);
+      toast({
+        title: "Parabéns! Conta criada com sucesso",
+        description: "Acesse sua conta",
+      });
+      navigate("/entrar");
+    } catch (error) {
+      console.error(error);
+
+      toast({
+        title: "Infelizmente não foi desta vez :(",
+        description: "Tente novamente mais tarde",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <Layout>
-      <Title>Criar uma conta</Title>
+    <AuthLayout.Container>
+      <AuthLayout.Title>Criar uma conta</AuthLayout.Title>
 
-      <Text>
+      <AuthLayout.Text>
         Entre com dados da empresa para criar uma conta
-      </Text>
+      </AuthLayout.Text>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
@@ -93,7 +96,8 @@ function RegisterPage() {
           />
 
           <div>
-            <Button type="submit" className="w-full my-4">
+            <Button type="submit" className="w-full my-4" disabled={loading}>
+              {loading && <ButtonLoader />}
               Cadastrar-se
             </Button>
           </div>
@@ -101,9 +105,9 @@ function RegisterPage() {
           <Separator />
 
           <div>
-            <Text>
+            <AuthLayout.Text>
               Acesse o sistema se já possuir uma conta
-            </Text>
+            </AuthLayout.Text>
 
             <Button
               asChild
@@ -116,7 +120,7 @@ function RegisterPage() {
           </div>
         </form>
       </Form>
-    </Layout>
+    </AuthLayout.Container>
   );
 }
 

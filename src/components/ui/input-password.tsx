@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
@@ -55,6 +53,7 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordProps>(
     );
   }
 );
+
 InputPassword.displayName = "InputPassword";
 
 export { InputPassword };
