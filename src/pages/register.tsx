@@ -27,6 +27,12 @@ const formSchema = z
         message: "Senhas não são iguais.",
         path: ["confirmPassword"],
       });
+
+      ctx.addIssue({
+        code: "custom",
+        message: "",
+        path: ["password"],
+      });
     }
   });
 

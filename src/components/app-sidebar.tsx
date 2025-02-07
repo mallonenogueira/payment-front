@@ -14,8 +14,6 @@ import {
   Users,
 } from "lucide-react";
 
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import { CompanySwitcher } from "@/components/company-switcher";
 import {
@@ -24,17 +22,14 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { useSession } from "@/hooks/use-session";
 import { NavAdmin } from "@/components/nav-admin";
+import { SidebarSubscription } from "./sidebar-subscription";
 
 // This is sample data.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   teams: [
     {
       name: "Acme Inc",
@@ -172,6 +167,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { session, isAdmin } = useSession();
+  const sidebar = useSidebar();
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -181,12 +177,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       <SidebarContent>
         {isAdmin && <NavAdmin items={data.admin} />}
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {/* <NavMain items={data.navMain} /> */}
+        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
 
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {sidebar.state === "expanded" && <SidebarSubscription />}
+
+        <NavUser user={session} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

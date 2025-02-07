@@ -18,6 +18,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { sessionService } from "@/services/token.service";
+import { useNavigate } from "react-router";
 
 function UserItem({
   user,
@@ -25,7 +27,7 @@ function UserItem({
   user: {
     name: string;
     email: string;
-    avatar: string;
+    avatar?: string;
   };
 }) {
   const getInitials = (name: string) => {
@@ -61,10 +63,11 @@ export function NavUser({
   user: {
     name: string;
     email: string;
-    avatar: string;
+    avatar?: string;
   };
 }) {
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
 
   return (
     <SidebarMenu>
@@ -119,7 +122,12 @@ export function NavUser({
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                navigate("/entrar");
+                sessionService.remove();
+              }}
+            >
               <LogOut />
               Sair
             </DropdownMenuItem>

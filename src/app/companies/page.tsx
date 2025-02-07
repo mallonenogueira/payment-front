@@ -1,6 +1,6 @@
-import { getUserColumns } from "@/app/users/columns";
-import { DataTable } from "@/app/users/data-table";
-import { SheetFormUser } from "@/app/users/sheet";
+import { getCompanyColumns } from "@/app/companies/columns";
+import { DataTable } from "@/app/companies/data-table";
+import { SheetFormCompany } from "@/app/companies/sheet";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -17,31 +17,30 @@ import {
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useMemo, useState } from "react";
-import { useUsersQuery } from "./use-users-query";
-import { User } from "@/services/user.service";
+import { useCompaniesQuery } from "./use-companies-query";
+import { Company } from "@/services/company.service";
 
 export default function Page() {
   const [sheetTitle, setSheetTitle] = useState<string>("");
-  const [user, setUser] = useState<User | null>(null);
-  const queryUsers = useUsersQuery();
+  const [company, setCompany] = useState<Company | null>(null);
+  const queryCompanies = useCompaniesQuery();
 
-  function handleCreateUserClick() {
-    setSheetTitle("Novo usuário");
-    setUser({
+  function handleCreateCompanyClick() {
+    setSheetTitle("Nova Empresa");
+    setCompany({
       id: "",
-      accountId: "",
-      email: "",
       name: "",
-      role: "USER",
+      active: true,
+      accountId: "",
     });
   }
 
   const columns = useMemo(
     () =>
-      getUserColumns({
-        onEdit: (user) => {
-          setUser(user);
-          setSheetTitle(user.name);
+      getCompanyColumns({
+        onEdit: (company) => {
+          setCompany(company);
+          setSheetTitle(company.name);
         },
       }),
     []
@@ -58,7 +57,7 @@ export default function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Usuários</BreadcrumbPage>
+                  <BreadcrumbPage>Empresas</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -67,22 +66,22 @@ export default function Page() {
 
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="flex justify-end">
-            <Button onClick={handleCreateUserClick}>
+            <Button onClick={handleCreateCompanyClick}>
               <Plus />
-              Usuário
+              Empresa
             </Button>
           </div>
 
-          {queryUsers.data && (
-            <DataTable columns={columns} data={queryUsers.data.data} />
+          {queryCompanies.data && (
+            <DataTable columns={columns} data={queryCompanies.data.data} />
           )}
 
-          <SheetFormUser
+          <SheetFormCompany
             title={sheetTitle}
-            isOpen={!!user}
-            user={user}
+            isOpen={!!company}
+            company={company}
             onClose={() => {
-              setUser(null);
+              setCompany(null);
             }}
           />
         </div>

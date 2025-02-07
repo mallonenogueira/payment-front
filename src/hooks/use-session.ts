@@ -14,7 +14,10 @@ function useSession(): UseSessionOutput {
   const session = sessionService.findPayload();
 
   if (!session) {
-    throw { message: "Usuário não autenticado" };
+    throw { 
+      type: 'NOT_AUTH',
+      message: "Usuário não autenticado" 
+    };
   }
 
   return {

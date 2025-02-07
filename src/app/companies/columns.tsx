@@ -1,42 +1,36 @@
 "use client";
 
-import { roleText } from "@/app/users/model";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { User } from "@/services/user.service";
+import { Company } from "@/services/company.service";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
 
-export const getUserColumns = (actions: {
-  onEdit: (user: User) => void;
-}): ColumnDef<User>[] => [
+export const getCompanyColumns = (actions: {
+  onEdit: (user: Company) => void;
+}): ColumnDef<Company>[] => [
   {
     accessorKey: "name",
     header: "Nome",
   },
   {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "role",
-    header: "Permissão",
+    accessorKey: "active",
+    header: "Status",
     maxSize: 10,
     cell: ({ getValue }) => {
-      const value = getValue() as User["role"];
-      const text = roleText[value];
+      const value = getValue() as Company["active"];
 
       return (
-        <Badge variant={value === "ADMIN" ? "default" : "outline"}>
-          {text}
+        <Badge variant={value ? "default" : "outline"}>
+          {value ? "Ativa" : "Inativa"}
         </Badge>
       );
     },
   },
   {
     id: "actions",
-    header: () => <div className="text-right">Ações</div>,
     maxSize: 10,
+    header: () => <div className="text-right">Ações</div>,
     cell: ({ row }) => {
       const user = row.original;
 

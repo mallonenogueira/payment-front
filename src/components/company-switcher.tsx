@@ -1,5 +1,8 @@
 import * as React from "react";
-import { ChevronsUpDown, Plus } from "lucide-react";
+import {
+  ChevronsUpDown,
+  // Plus
+} from "lucide-react";
 
 import {
   DropdownMenu,
@@ -54,6 +57,9 @@ export function CompanySwitcher({
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Empresas
             </DropdownMenuLabel>
+
+            <DropdownMenuSeparator />
+
             {companies.map((company) => (
               <DropdownMenuItem
                 key={company.name}
@@ -63,16 +69,17 @@ export function CompanySwitcher({
                 {company.name}
               </DropdownMenuItem>
             ))}
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator /> */}
 
-            <DropdownMenuItem className="gap-2 p-2">
+            {/* <DropdownMenuItem className="gap-2 p-2">
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                 <Plus className="size-4" />
               </div>
+
               <div className="font-medium text-muted-foreground">
                 Nova empresa
               </div>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

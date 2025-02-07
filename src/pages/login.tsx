@@ -36,10 +36,7 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await authService.signin(values);
-
-      localStorage.setItem("token", response.token);
-
+      await authService.signin(values);
       navigate("/inicio");
     } catch (error) {
       console.error(error);

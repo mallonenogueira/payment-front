@@ -13,6 +13,7 @@ export interface SinginOutput {
     name: string;
     email: string;
     accountId: string;
+    role: "ADMIN" | "USER";
     companies: {
       id: string;
       name: string;
