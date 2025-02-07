@@ -3,6 +3,7 @@ import RegisterPage from "@/pages/register";
 import LoginPage from "@/pages/login";
 import DashboardPage from "./pages/dashboard";
 import { PrivateRoute } from "./components/route/private.route";
+import UsersPage from "@/pages/users";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,13 @@ const router = createBrowserRouter([
       {
         path: "/inicio",
         Component: DashboardPage,
+      },
+      {
+        path: "/usuarios",
+        Component: UsersPage,
+      },{
+        path: "/usuarios/:userId",
+        Component: UsersPage,
       },
     ],
   },

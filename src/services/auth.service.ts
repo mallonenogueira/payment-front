@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 import { AxiosInstance } from "axios";
-import { tokenService } from "./token.service";
+import { sessionService } from "./token.service";
 
 export interface SinginInput {
   email: string;
@@ -25,9 +25,9 @@ export class AuthService {
   constructor(private api: AxiosInstance) {}
 
   async signin(input: SinginInput) {
-    const { data } = await this.api.post("/api/auth", input);
-    
-    tokenService.save(data.token);
+    const { data } = await this.api.post<SinginOutput>("/api/auth", input);
+
+    sessionService.save(data);
 
     return data;
   }

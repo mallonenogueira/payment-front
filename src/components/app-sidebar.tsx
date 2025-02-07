@@ -1,8 +1,9 @@
-import * as React from "react"
+import * as React from "react";
 import {
   AudioWaveform,
   BookOpen,
   Bot,
+  Building2,
   Command,
   Frame,
   GalleryVerticalEnd,
@@ -10,19 +11,22 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
-} from "lucide-react"
+  Users,
+} from "lucide-react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { NavMain } from "@/components/nav-main";
+import { NavProjects } from "@/components/nav-projects";
+import { NavUser } from "@/components/nav-user";
+import { CompanySwitcher } from "@/components/company-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { useSession } from "@/hooks/use-session";
+import { NavAdmin } from "@/components/nav-admin";
 
 // This is sample data.
 const data = {
@@ -152,16 +156,31 @@ const data = {
       icon: Map,
     },
   ],
-}
+  admin: [
+    {
+      name: "Usuários",
+      url: "/usuarios",
+      icon: Users,
+    },
+    {
+      name: "Empresas",
+      url: "/empresas",
+      icon: Building2,
+    },
+  ],
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { session, isAdmin } = useSession();
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <CompanySwitcher companies={session.companies} />
       </SidebarHeader>
-      
+
       <SidebarContent>
+        {isAdmin && <NavAdmin items={data.admin} />}
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
@@ -171,5 +190,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
