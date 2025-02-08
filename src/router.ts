@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         Component: CompaniesPage,
       },
       {
-        path: "/inscrever-se",
+        path: "/assinar",
         Component: SubscriptionPage,
       },
     ],

@@ -21,9 +21,40 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { useProductsQuery } from "./use-products-query";
+import { subscriptionService } from "@/services/subscription.service";
+import { Product } from "@/services/product.service";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Page() {
+  const toast = useToast();
   const productsQuery = useProductsQuery();
+
+  async function submitSubscription(product: Product) {
+    try {
+      const subscription = await subscriptionService.create({
+        productId: product.id,
+      });
+
+      const link = await subscriptionService.createLink({
+        id: subscription.id,
+      });
+
+      window.location.href = link.url;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <SidebarProvider>
@@ -59,46 +90,45 @@ export default function Page() {
                     <CardDescription>{product.description}</CardDescription>
                   </CardHeader>
 
-                  <CardContent></CardContent>
+                  <CardContent>R$ {product.price},00</CardContent>
 
                   <CardFooter>
-                    <Button
-                      variant={product.type === "MONTH" ? "outline" : "default"}
-                      className="w-full"
-                    >
-                      Escolher esse
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant={
+                            product.type === "MONTH" ? "outline" : "default"
+                          }
+                          className="w-full"
+                        >
+                          Assinar agora
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Confirmar pedido?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            <h2>{product.title}</h2>
+
+                            <b>R$ {product.price},00</b>
+
+                            <p>
+                              Você será direcionado para o nosso meio de
+                              pagamento
+                            </p>
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Voltar</AlertDialogCancel>
+                          <Button onClick={() => submitSubscription(product)}>
+                            Ir para pagamento
+                          </Button>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </CardFooter>
                 </Card>
               ))}
-            {/* <Card className={"w-[500px]"}>
-              <CardHeader>
-                <CardTitle>Plano Mensal</CardTitle>
-                <CardDescription>You have 3 unread messages.</CardDescription>
-
-                <CardDescription></CardDescription>
-              </CardHeader>
-
-              <CardContent></CardContent>
-
-              <CardFooter>
-                <Button variant="outline" className="w-full">
-                  Escolher esse
-                </Button>
-              </CardFooter>
-            </Card>
-
-            <Card className={"w-[500px]"}>
-              <CardHeader>
-                <CardTitle>Plano Anual</CardTitle>
-                <CardDescription>You have 3 unread messages.</CardDescription>
-              </CardHeader>
-              <CardContent></CardContent>
-
-              <CardFooter>
-                <Button className="w-full">Escolher esse</Button>
-              </CardFooter>
-            </Card> */}
           </div>
         </div>
       </SidebarInset>

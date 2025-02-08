@@ -26,7 +26,7 @@ export function SidebarSubscription() {
             className="animate-[bounce_0.5s_linear_infinite]"
             size="sm"
           >
-            <Link to="/inscrever-se">Escolher plano</Link>
+            <Link to="/assinar">Escolher plano</Link>
           </Button>
         </CardContent>
       </form>
